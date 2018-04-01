@@ -5,10 +5,7 @@ export default class Results extends Component {
     super(props);
     this.state = {
       resultData: "",
-      results: {
-        "result-1": "test1",
-        "result-2": "test2"
-      }
+      results: []
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -19,12 +16,14 @@ export default class Results extends Component {
     this.setState({ resultData: e.target.value });
   }
   handleClick() {
-    this.setState({ results: this.state.resultData });
-    console.log(this.state.results);
+    this.setState({ results: [...this.state.results, this.state.resultData] });
   }
   render() {
     const theResults = this.state.results;
-    const listItems = theResults.map(result => <li>{result}</li>);
+    const listItems = theResults.map((result, index) => (
+      <li key={index}>{result}</li>
+    ));
+
     return (
       <div>
         <input onChange={this.handleChange} />
