@@ -19,7 +19,7 @@ export default class App extends Component {
           <li>Build quiz and enjoy :)</li>
         </ul>
 
-        <Tabs>
+        <Tabs forceRenderTabPanel={true}>
           <TabList>
             <Tab>Results</Tab>
             <Tab>Questions</Tab>

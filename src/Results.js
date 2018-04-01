@@ -10,25 +10,43 @@ export default class Results extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.removeResult = this.removeResult.bind(this);
   }
 
   handleChange(e) {
     this.setState({ resultData: e.target.value });
   }
   handleClick() {
-    this.setState({ results: [...this.state.results, this.state.resultData] });
+    //CORRECT: arrow function to use prevState ->
+    this.setState(prevState => ({
+      results: [...prevState.results, prevState.resultData]
+    }));
+
+    //WRONG: this.state used in setState->
+    //this.setState({ results: [...this.state.results, this.state.resultData] });
+  }
+  removeResult(i) {
+    this.setState(prevState => ({
+      results: [
+        ...prevState.results.slice(0, i),
+        ...prevState.results.slice(i + 1)
+      ]
+    }));
   }
   render() {
-    const theResults = this.state.results;
-    const listItems = theResults.map((result, index) => (
-      <li key={index}>{result}</li>
-    ));
-
     return (
       <div>
         <input onChange={this.handleChange} />
         <input type="button" value="Add Result" onClick={this.handleClick} />
-        <ul>{listItems}</ul>
+        <br />
+        (Click to remove)
+        <ul>
+          {this.state.results.map((result, index) => (
+            <li key={index} onClick={() => this.removeResult(index)}>
+              {result}
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
