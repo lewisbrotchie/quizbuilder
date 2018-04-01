@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 export default class Results extends Component {
   constructor(props) {
@@ -7,10 +8,14 @@ export default class Results extends Component {
       resultData: "",
       results: []
     };
+    //Don't need with "() => this.function()" in render
+    //this.handleClick = this.handleClick.bind(this);
+    //this.removeResult = this.removeResult.bind(this);
 
-    this.handleClick = this.handleClick.bind(this);
+    //Still need this
+    //Apparently creates a copy of the event handler for every instance (Not good)
+    //TODO: Refactor into own component?
     this.handleChange = this.handleChange.bind(this);
-    this.removeResult = this.removeResult.bind(this);
   }
 
   handleChange(e) {
@@ -22,7 +27,7 @@ export default class Results extends Component {
       results: [...prevState.results, prevState.resultData]
     }));
 
-    //WRONG: this.state used in setState->
+    //WRONG: this.state used in setState ->
     //this.setState({ results: [...this.state.results, this.state.resultData] });
   }
   removeResult(i) {
@@ -37,16 +42,32 @@ export default class Results extends Component {
     return (
       <div>
         <input onChange={this.handleChange} />
-        <input type="button" value="Add Result" onClick={this.handleClick} />
+        <input
+          type="button"
+          value="Add Result"
+          onClick={() => this.handleClick()}
+        />
         <br />
-        (Click to remove)
-        <ul>
+        <Tabs forceRenderTabPanel={true}>
+          <TabList>
+            <Tab>Example Result</Tab>
+            {this.state.results.map((result, index) => (
+              <Tab key={index} /*onClick={() => this.removeResult(index)}*/>
+                {result}
+              </Tab>
+            ))}
+          </TabList>
+          <TabPanel>Example description...</TabPanel>
           {this.state.results.map((result, index) => (
-            <li key={index} onClick={() => this.removeResult(index)}>
-              {result}
-            </li>
+            <TabPanel key={index}>
+              <input
+                type="button"
+                value="Remove this result"
+                onClick={() => this.removeResult(index)}
+              />
+            </TabPanel>
           ))}
-        </ul>
+        </Tabs>
       </div>
     );
   }
