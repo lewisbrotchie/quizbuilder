@@ -18,8 +18,6 @@ export default class App extends Component {
         <hr />
         <Results />
         <hr />
-
-        <Results />
       </div>
     );
   }

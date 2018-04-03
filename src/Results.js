@@ -21,7 +21,7 @@ export default class Results extends Component {
   handleChange(e) {
     this.setState({ resultData: e.target.value });
   }
-  handleClick() {
+  handleClick = () => {
     //CORRECT: arrow function to use prevState ->
     this.setState(prevState => ({
       results: [...prevState.results, prevState.resultData]
@@ -29,7 +29,7 @@ export default class Results extends Component {
 
     //WRONG: this.state used in setState ->
     //this.setState({ results: [...this.state.results, this.state.resultData] });
-  }
+  };
   removeResult(i) {
     this.setState(prevState => ({
       results: [
@@ -42,11 +42,7 @@ export default class Results extends Component {
     return (
       <div>
         <input onChange={this.handleChange} />
-        <input
-          type="button"
-          value="Add Result"
-          onClick={() => this.handleClick()}
-        />
+        <input type="button" value="Add Result" onClick={this.handleClick} />
         <br />
         <Tabs forceRenderTabPanel={true}>
           <TabList>
